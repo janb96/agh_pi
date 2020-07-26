@@ -10,11 +10,11 @@ let Orders = sequelize.define('Orders', {
     },
     orderPrice: {
         type: Sequelize.FLOAT,
-        allowNull: false
+        allowNull: true
     },
     employeeID: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     tableID: {
         type: Sequelize.INTEGER,
