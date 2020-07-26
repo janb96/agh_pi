@@ -81,7 +81,7 @@ router.put('/', function(req, res, next) {
     const categoryImageUrl = req.body.categoryImageUrl;
     const isVisible = req.body.isVisible;
 
-    if(!categoryID || !categoryName || !categoryDescription || !categoryImageUrl || !isVisible) {
+    if(!categoryID || !categoryName || !categoryDescription || !categoryImageUrl) {
         res.send(new ResponseType1(false, "The entered data is incorrect"));
         return;
     }

@@ -1,35 +1,38 @@
 var sequelize = require('../connect.js');
 var Sequelize = require('sequelize');
-let Products = require('./Products');
 sequelize.sync();
 
-let Categories = sequelize.define('Categories', {
-    categoryID: {
+let Orders = sequelize.define('Orders', {
+    orderID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    categoryName: {
-        type: Sequelize.STRING,
-        unique: true,
+    orderPrice: {
+        type: Sequelize.FLOAT,
         allowNull: false
     },
-    categoryDescription: {
-        type: Sequelize.TEXT,
-        allowNull: true
+    employeeID: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     },
-    categoryImageUrl: {
-        type: Sequelize.STRING,
+    tableID: {
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     dateOfCreation: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     },
-    isVisible: {
+    isPaid: {
         type: Sequelize.BOOLEAN,
         allowNull: false
     },
+    orderStatus: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+
 });
 
-module.exports = Categories;
+module.exports = Orders;
