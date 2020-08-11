@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors');
 
 var categoriesRouter = require('./routes/categories');
 var productsRouter = require('./routes/products');
@@ -11,6 +12,7 @@ var tablesRouter = require('./routes/tables');
 var ordersRouter = require('./routes/orders');
 
 var app = express();
+app.use(cors());
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;

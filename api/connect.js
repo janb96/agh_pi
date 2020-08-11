@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelize = new Sequelize('agh_pi', 'agh_j', '1234', {
-    host: '10.0.40.25',
+    host: 'localhost',
     port: '5001',
     dialect: 'mysql',
     define: {
