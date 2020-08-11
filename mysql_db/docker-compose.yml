@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rabarbar1234
+      MYSQL_DATABASE: agh_pi
+      MYSQL_USER: agh_j
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 5001:3306
+    restart: always
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '5002:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rabarbar1234
