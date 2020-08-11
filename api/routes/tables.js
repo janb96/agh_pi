@@ -6,8 +6,10 @@ let tables = require('../models/Tables');
 
 //UTILS
 let ResponseType1 = require('../utils/ResponseType1');
+let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
+let EmployeePermission_t2 = require('../utils/EmployeePermission_t2');
 
-router.get('/', function(req, res, next) {
+router.get('/', EmployeePermission_t2, function(req, res, next) {
 
     tables.findAll().then(
         result => {
@@ -22,7 +24,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.post('/', async function(req, res, next) {
+router.post('/', EmployeePermission_t1, async function(req, res, next) {
 
     let tableName = req.body.tableName;
     let tableStatus = req.body.tableStatus;
@@ -45,7 +47,7 @@ router.post('/', async function(req, res, next) {
 
 });
 
-router.put('/', function(req, res, next) {
+router.put('/', EmployeePermission_t2, function(req, res, next) {
 
     const tableID = req.body.tableID;
     const tableName = req.body.tableName;

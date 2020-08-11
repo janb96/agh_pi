@@ -7,8 +7,10 @@ let products = require('../models/Products');
 
 //UTILS
 let ResponseType1 = require('../utils/ResponseType1');
+let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
+let EmployeePermission_t3 = require('../utils/EmployeePermission_t3');
 
-router.get('/', function(req, res, next) {
+router.get('/', EmployeePermission_t3, function(req, res, next) {
 
     products.findAll().then(
         result => {
@@ -23,7 +25,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', EmployeePermission_t1, function(req, res, next) {
 
     const productName = req.body.productName;
     const categoryID = req.body.categoryID;
@@ -104,7 +106,7 @@ router.post('/', function(req, res, next) {
 
 });
 
-router.put('/', function(req, res, next) {
+router.put('/', EmployeePermission_t3, function(req, res, next) {
 
     const productID = req.body.productID;
     const productName = req.body.productName;

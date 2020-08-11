@@ -12,8 +12,9 @@ let employees = require('../models/Employees');
 
 //UTILS
 let ResponseType1 = require('../utils/ResponseType1');
+let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
 
-router.post('/', async function(req, res, next) {
+router.post('/', EmployeePermission_t1, async function(req, res, next) {
 
     let name = req.body.name;
     let surname = req.body.surname;

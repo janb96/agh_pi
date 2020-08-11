@@ -8,8 +8,10 @@ let products = require('../models/Products');
 
 //UTILS
 let ResponseType1 = require('../utils/ResponseType1');
+let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
+let EmployeePermission_t3 = require('../utils/EmployeePermission_t3');
 
-router.get('/', function(req, res, next) {
+router.get('/', EmployeePermission_t1, function(req, res, next) {
 
     orders.findAll().then(
         result => {
@@ -24,7 +26,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.get('/orderDetails/byOrderID/:orderID', function(req, res, next) {
+router.get('/orderDetails/byOrderID/:orderID', EmployeePermission_t3, function(req, res, next) {
 
     let orderID = req.params.orderID;
 
@@ -45,7 +47,7 @@ router.get('/orderDetails/byOrderID/:orderID', function(req, res, next) {
 
 });
 
-router.get('/byOrderID/:orderID', function(req, res, next) {
+router.get('/byOrderID/:orderID', EmployeePermission_t3, function(req, res, next) {
 
     let orderID = req.params.orderID;
 
@@ -66,7 +68,7 @@ router.get('/byOrderID/:orderID', function(req, res, next) {
 
 });
 
-router.get('/byStatus/:orderStatus', function(req, res, next) {
+router.get('/byStatus/:orderStatus', EmployeePermission_t3, function(req, res, next) {
 
     let orderStatus = req.params.orderStatus;
 
@@ -174,7 +176,7 @@ router.post('/', async function(req, res, next) {
 
 });
 
-router.get('/', function(req, res, next) {
+router.get('/byOrderStatus/:orderStatus', EmployeePermission_t3, function(req, res, next) {
 
     let orderStatus = req.params.orderStatus;
 

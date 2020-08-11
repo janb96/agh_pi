@@ -6,6 +6,7 @@ let categories = require('../models/Categories');
 
 //UTILS
 let ResponseType1 = require('../utils/ResponseType1');
+let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
 
 router.get('/', function(req, res, next) {
 
@@ -22,7 +23,7 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', EmployeePermission_t1, function(req, res, next) {
 
     const categoryName = req.body.categoryName;
     const categoryDescription = req.body.categoryDescription;
@@ -73,7 +74,7 @@ router.post('/', function(req, res, next) {
 
 });
 
-router.put('/', function(req, res, next) {
+router.put('/', EmployeePermission_t1, function(req, res, next) {
 
     const categoryID = req.body.categoryID;
     const categoryName = req.body.categoryName;
