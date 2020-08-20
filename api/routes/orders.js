@@ -172,7 +172,7 @@ router.post('/', async function(req, res, next) {
     }
 
 
-    res.send(new ResponseType1(true, "Order created"));
+    res.send(new ResponseType1(true, "CustomerOrder created"));
 
 });
 

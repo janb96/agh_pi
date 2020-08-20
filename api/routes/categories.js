@@ -8,7 +8,7 @@ let categories = require('../models/Categories');
 let ResponseType1 = require('../utils/ResponseType1');
 let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
 
-router.get('/', function(req, res, next) {
+router.get('/', EmployeePermission_t1, function(req, res, next) {
 
     categories.findAll().then(
         result => {
@@ -113,6 +113,25 @@ router.put('/', EmployeePermission_t1, function(req, res, next) {
         err => {
             console.log(err);
             res.send(new ResponseType1(false, "Something gone wrong ;("));
+        }
+    );
+
+});
+
+router.get('/visible', function(req, res, next) {
+
+    categories.findAll({
+        where: {
+            isVisible: true
+        }
+    }).then(
+        result => {
+            res.send(new ResponseType1(true, result));
+        }
+    ).catch(
+        err => {
+            res.send(new ResponseType1(false, "Something gone wrong ;("));
+            console.log(err);
         }
     );
 
