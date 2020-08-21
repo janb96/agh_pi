@@ -3,17 +3,16 @@ import axios from 'axios';
 import {config} from './../../config';
 import ApiResponse from './../utils/ApiResponse';
 
-class AddTable extends Component {
+class EditTable extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            tableName: "",
-            tableStatus: "",
+            tableName: this.props.tableName,
+            tableStatus: this.props.tableStatus,
             apiResponse: "",
             status: "",
-            isLogin: "",
-            userData: null,
+            tableID: this.props.tableID,
             avalibleTableStatus: [
                 "FREE",
                 "BUSY",
@@ -22,28 +21,16 @@ class AddTable extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.checkEmployeeToken = this.checkEmployeeToken.bind(this);
-    }
-
-    componentDidMount() {
-        this.checkEmployeeToken();
-    }
-
-    async checkEmployeeToken() {
-        let response = await axios.get(config.apiUrl + "/employees/checkEmployeeToken");
-        this.setState({
-            isLogin: response.data.status,
-            userData: response.data.message
-        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const postData = {
+        const putData = {
+            tableID: this.state.tableID,
             tableName: this.state.tableName,
             tableStatus: this.state.tableStatus
         };
-        axios.post(config.apiUrl + "/tables", postData).then(
+        axios.put(config.apiUrl + "/tables", putData).then(
             response => {
                 if(response.data.status !== true) {
                     this.setState({
@@ -51,6 +38,7 @@ class AddTable extends Component {
                         status: response.data.status
                     });
                 } else {
+                    setTimeout(function(){ window.location.reload(); }, 1000);
                     this.setState({
                         apiResponse: response.data.message,
                         status: response.data.status
@@ -69,38 +57,40 @@ class AddTable extends Component {
 
     render() {
 
-        if(this.state.isLogin.toString() === "false") {
-            window.location.href = "/login";
-        }
-
-        if(!this.state.userData){
-            return (<></>);
-        }
-
         return (
             <div className="restaurant-manage-form">
-                <h1>Add table</h1>
+                <hr/>
+                <h3>Edit table (tableID: {this.props.tableID} tableName: {this.props.tableName})</h3>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label>Table name</label>
-                        <input  onChange={this.handleChange} placeholder="Table name" type="text" className="form-control" id="tableName"/>
+                        <input  onChange={this.handleChange}
+                                placeholder="Table name"
+                                type="text"
+                                className="form-control"
+                                id="tableName"
+                                value={this.state.tableName}
+                        />
                     </div>
                     <div className="form-group">
                         <label>Table status</label>
-                        <select  onChange={this.handleChange} className="form-control" id="tableStatus">
+                        <select  onChange={this.handleChange}
+                                 className="form-control"
+                                 id="tableStatus"
+                        >
                             <option value="">
                                 Select table status
                             </option>
                             {this.state.avalibleTableStatus.map((value, index) => {
                                 return(
-                                    <option value={value} key={index.toString()}>
+                                    <option selected={this.props.tableStatus === value} value={value} key={index.toString()}>
                                         {value}
                                     </option>
                                 );
                             })}
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-secondary btn-block">Add</button>
+                    <button type="submit" className="btn btn-warning btn-block">Edit</button>
                     <ApiResponse status={this.state.status} apiResponse={this.state.apiResponse}/>
                 </form>
             </div>
@@ -108,4 +98,4 @@ class AddTable extends Component {
     }
 }
 
-export default AddTable;
+export default EditTable;
