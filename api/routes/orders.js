@@ -197,6 +197,46 @@ router.get('/byOrderStatus/:orderStatus', EmployeePermission_t3, function(req, r
 
 });
 
+router.put('/changeStatus', function(req, res, next) {
+
+    const orderID = req.body.orderID;
+    const orderStatus = req.body.orderStatus;
+
+    if(!Number.isInteger(orderID)) {
+        res.send(new ResponseType1(false, "The entered orderID is incorrect"));
+        return;
+    }
+
+    if(orderStatus === "NEW" || orderStatus === "READY" || orderStatus === "DELIVERED") {
+
+        const order = {
+            orderStatus: orderStatus
+        };
+
+        orders.update(order, {
+                where: {
+                    orderID: orderID
+                }
+            }
+        ).then(
+            result => {
+                console.log(result);
+                res.send(new ResponseType1(true, "Order status successfully changed"));
+            }
+        ).catch(
+            err => {
+                console.log(err);
+                res.send(new ResponseType1(false, "Something gone wrong ;("));
+            }
+        );
+
+    } else {
+        res.send(new ResponseType1(false, "The entered orderStatus is incorrect"));
+        return;
+    }
+
+});
+
 
 
 module.exports = router;
