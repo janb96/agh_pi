@@ -200,6 +200,27 @@ router.get('/byCategoryID/:categoryID', function(req, res, next) {
 
 });
 
+router.get('/byProductID/:productID', function(req, res, next) {
+
+    let productID = req.params.productID;
+
+    products.findOne({
+        where: {
+            productID: productID
+        }
+    }).then(
+        result => {
+            res.send(new ResponseType1(true, result));
+        }
+    ).catch(
+        err => {
+            res.send(new ResponseType1(false, "Something gone wrong ;("));
+            console.log(err);
+        }
+    );
+
+});
+
 router.get('/recommended', function(req, res, next) {
 
     products.findAll({

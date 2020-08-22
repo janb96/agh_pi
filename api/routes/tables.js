@@ -8,10 +8,32 @@ let tables = require('../models/Tables');
 let ResponseType1 = require('../utils/ResponseType1');
 let EmployeePermission_t1 = require('../utils/EmployeePermission_t1');
 let EmployeePermission_t2 = require('../utils/EmployeePermission_t2');
+let EmployeePermission_t3 = require('../utils/EmployeePermission_t3');
 
 router.get('/', EmployeePermission_t2, function(req, res, next) {
 
     tables.findAll().then(
+        result => {
+            res.send(new ResponseType1(true, result));
+        }
+    ).catch(
+        err => {
+            res.send(new ResponseType1(false, "Something gone wrong ;("));
+            console.log(err);
+        }
+    );
+
+});
+
+router.get('/byTableID/:tableID', EmployeePermission_t3, function(req, res, next) {
+
+    let tableID = req.params.tableID;
+
+    tables.findAll({
+        where: {
+            tableID: tableID
+        }
+    }).then(
         result => {
             res.send(new ResponseType1(true, result));
         }
