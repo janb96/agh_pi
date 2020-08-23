@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {config} from './../../config';
 
-import EditCategory from "./EditCategory";
+import Order from './Order';
 import Navbar from "../utils/Navbar";
 
-class EditCategories extends Component {
+class PaidOrders extends Component {
 
     constructor() {
         super();
         this.state = {
-            categories: [],
+            paidOrders: [],
             isLogin: "",
             userData: null
         };
@@ -20,8 +20,7 @@ class EditCategories extends Component {
     async checkEmployeeToken() {
         let response = await axios.get(config.apiUrl + "/employees/checkEmployeeToken");
         this.setState({
-            isLogin: response.data.status,
-            userData: response.data.message
+            isLogin: response.data.status
         });
     }
 
@@ -29,10 +28,10 @@ class EditCategories extends Component {
 
         this.checkEmployeeToken();
 
-        axios.get(config.apiUrl + "/categories").then(
+        axios.get(config.apiUrl + "/orders/paid").then(
             response => {
                 this.setState({
-                    categories: response.data.message
+                    paidOrders: response.data.message
                 })
             }
         );
@@ -41,26 +40,22 @@ class EditCategories extends Component {
 
     render() {
 
+        setTimeout(function(){ window.location.reload(); }, 5000);
+
         if(this.state.isLogin.toString() === "false") {
             window.location.href = "/login";
         }
 
-        if(!this.state.userData){
-            return (<></>);
-        }
 
-        if(this.state.categories.length > 0) {
+        if(this.state.paidOrders.length > 0) {
             return(
-                <div className="edit-categories">
+                <div className="manage-orders">
                     <Navbar/>
                     <div className="container">
-                        {this.state.categories.map((value, index) => {
-                            return <EditCategory
-                                categoryID={value.categoryID}
-                                categoryName={value.categoryName}
-                                categoryDescription={value.categoryDescription}
-                                categoryImageUrl={value.categoryImageUrl}
-                                isVisible={value.isVisible}
+                        <h3><span className="badge badge-info">NEW</span> orders</h3>
+                        {this.state.paidOrders.map((value, index) => {
+                            return <Order
+                                order={value}
                                 key={index.toString()}
                             />
                         })}
@@ -69,8 +64,11 @@ class EditCategories extends Component {
             );
         } else {
             return(
-                <div className="categories-selector">
-                    <div className="alert alert-danger">No categories found</div>
+                <div className="manage-orders">
+                    <Navbar/>
+                    <div className="container">
+                        <div className="alert alert-danger">No orders found</div>
+                    </div>
                 </div>
             );
         }
@@ -79,4 +77,4 @@ class EditCategories extends Component {
 
 }
 
-export default EditCategories;
+export default PaidOrders;

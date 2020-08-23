@@ -3,6 +3,7 @@ import axios from 'axios';
 import {config} from './../../config';
 import ManageRestaurantButtons from './ManageRestaurantButtons';
 import ManageOrdersButtons from "./ManageOrdersButtons";
+import Navbar from "../utils/Navbar";
 
 class EmployeePanel extends Component {
 
@@ -13,7 +14,6 @@ class EmployeePanel extends Component {
             userData: null
         };
         this.checkEmployeeToken = this.checkEmployeeToken.bind(this);
-        this.signOut = this.signOut.bind(this);
     }
 
     componentDidMount() {
@@ -26,11 +26,6 @@ class EmployeePanel extends Component {
             isLogin: response.data.status,
             userData: response.data.message
         });
-    }
-
-    signOut() {
-        window.localStorage.removeItem("token");
-        window.location.href = "/login";
     }
 
     render() {
@@ -47,12 +42,7 @@ class EmployeePanel extends Component {
 
         return (
             <div className="employee-panel">
-                <div className="jumbotron text-center">
-                    <h1 className="display-3">Employee panel</h1>
-                    <button type="button" className="btn btn-danger" onClick={this.signOut}>
-                        Sign out <i className="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
+                <Navbar/>
                 <div className="container">
                     <div className="row">
                         <div className="col-md-4">

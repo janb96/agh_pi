@@ -13,6 +13,7 @@ import EditTables from "./components/tables/EditTables";
 import EditCategories from "./components/categories/EditCategories";
 import EditProducts from "./components/products/EditProducts";
 import Orders from "./components/orders/Orders";
+import PaidOrders from "./components/orders/PaidOrders";
 
 axios.defaults.headers['x-access-token'] = window.localStorage.getItem("token");
 
@@ -35,6 +36,7 @@ class App extends Component {
                     <Route path='/product/edit' component={EditProducts}/>
                     <Route path='/employee/add' component={AddEmployee}/>
                     <Route path='/orders/active' component={Orders}/>
+                    <Route path='/orders/paid' component={PaidOrders}/>
                 </Switch>
             </BrowserRouter>
         );

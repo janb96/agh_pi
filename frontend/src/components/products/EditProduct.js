@@ -85,6 +85,7 @@ class EditProduct extends Component {
 
         return (
             <div className="restaurant-manage-form">
+                <hr/>
                 <h3>Edit product (productID: {this.props.productID} productName: {this.props.productName})</h3>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">

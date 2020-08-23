@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {config} from './../../config';
 import OrderDetails from "./OrderDetails";
+import ApiResponse from './../utils/ApiResponse';
 
 class Order extends Component {
 
@@ -9,10 +10,13 @@ class Order extends Component {
         super();
         this.state = {
             tableName: "pending...",
-            orderDetails: []
+            orderDetails: [],
+            apiResponse: "",
+            status: ""
         };
         this.changeStatus = this.changeStatus.bind(this);
         this.getAlertStyle = this.getAlertStyle.bind(this);
+        this.makePaid = this.makePaid.bind(this);
     }
 
     componentDidMount() {
@@ -57,6 +61,28 @@ class Order extends Component {
 
         axios.put(config.apiUrl + "/orders/changeStatus/", putData).then(
             response => {
+
+                if(response.data.status){
+                    setTimeout(function(){ window.location.reload(); }, 1000);
+                }
+
+                this.setState({
+                    status: response.data.status,
+                    apiResponse: response.data.message
+                })
+            }
+        );
+    }
+
+    makePaid() {
+
+        const putData = {
+            orderID: this.props.order.orderID,
+            isPaid: 1
+        };
+
+        axios.put(config.apiUrl + "/orders/isPaid", putData).then(
+            response => {
                 window.location.reload();
             }
         );
@@ -76,6 +102,7 @@ class Order extends Component {
                         key={index.toString()}
                     />
                 })}
+                <h5>Paid: {this.props.order.isPaid.toString()}</h5>
                 <button className="btn btn-info" onClick={this.changeStatus} id="NEW">
                     NEW
                 </button>
@@ -85,6 +112,13 @@ class Order extends Component {
                 <button className="btn btn-success" onClick={this.changeStatus} id="DELIVERED">
                     DELIVERED
                 </button>
+                <button className="btn btn-outline-danger" onClick={this.changeStatus} id="CLOSED">
+                    CLOSED
+                </button>
+                <button className="btn btn-outline-dark" onClick={this.makePaid}>
+                    Paid
+                </button>
+                <ApiResponse status={this.state.status} apiResponse={this.state.apiResponse}/>
             </div>
         );
 

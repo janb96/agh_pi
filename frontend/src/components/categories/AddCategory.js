@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {config} from './../../config';
 import ApiResponse from './../utils/ApiResponse';
+import Navbar from "../utils/Navbar";
 
 class AddCategory extends Component {
 
@@ -85,6 +86,8 @@ class AddCategory extends Component {
         
         return (
             <div className="restaurant-manage-form">
+                <Navbar/>
+                <div className="container">
                 <h1>Add category</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
@@ -119,6 +122,7 @@ class AddCategory extends Component {
                     <button type="submit" className="btn btn-secondary btn-block">Add</button>
                     <ApiResponse status={this.state.status} apiResponse={this.state.apiResponse}/>
                 </form>
+                </div>
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {config} from './../../config';
 import ApiResponse from './../utils/ApiResponse';
+import Navbar from "../utils/Navbar";
 
 class AddTable extends Component {
 
@@ -79,30 +80,33 @@ class AddTable extends Component {
 
         return (
             <div className="restaurant-manage-form">
-                <h1>Add table</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label>Table name</label>
-                        <input  onChange={this.handleChange} placeholder="Table name" type="text" className="form-control" id="tableName"/>
-                    </div>
-                    <div className="form-group">
-                        <label>Table status</label>
-                        <select  onChange={this.handleChange} className="form-control" id="tableStatus">
-                            <option value="">
-                                Select table status
-                            </option>
-                            {this.state.avalibleTableStatus.map((value, index) => {
-                                return(
-                                    <option value={value} key={index.toString()}>
-                                        {value}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                    <button type="submit" className="btn btn-secondary btn-block">Add</button>
-                    <ApiResponse status={this.state.status} apiResponse={this.state.apiResponse}/>
-                </form>
+                <Navbar/>
+                <div className="container">
+                    <h1>Add table</h1>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label>Table name</label>
+                            <input  onChange={this.handleChange} placeholder="Table name" type="text" className="form-control" id="tableName"/>
+                        </div>
+                        <div className="form-group">
+                            <label>Table status</label>
+                            <select  onChange={this.handleChange} className="form-control" id="tableStatus">
+                                <option value="">
+                                    Select table status
+                                </option>
+                                {this.state.avalibleTableStatus.map((value, index) => {
+                                    return(
+                                        <option value={value} key={index.toString()}>
+                                            {value}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <button type="submit" className="btn btn-secondary btn-block">Add</button>
+                        <ApiResponse status={this.state.status} apiResponse={this.state.apiResponse}/>
+                    </form>
+                </div>
             </div>
         );
     }
