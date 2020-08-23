@@ -26,6 +26,25 @@ router.get('/', EmployeePermission_t1, function(req, res, next) {
 
 });
 
+router.get('/paid', EmployeePermission_t1, function(req, res, next) {
+
+    orders.findAll({
+        where: {
+            isPaid: 1
+        }
+    }).then(
+        result => {
+            res.send(new ResponseType1(true, result));
+        }
+    ).catch(
+        err => {
+            res.send(new ResponseType1(false, "Something gone wrong ;("));
+            console.log(err);
+        }
+    );
+
+});
+
 router.get('/orderDetails/byOrderID/:orderID', EmployeePermission_t3, function(req, res, next) {
 
     let orderID = req.params.orderID;
@@ -197,7 +216,7 @@ router.get('/byOrderStatus/:orderStatus', EmployeePermission_t3, function(req, r
 
 });
 
-router.put('/changeStatus', function(req, res, next) {
+router.put('/changeStatus', async function(req, res, next) {
 
     const orderID = req.body.orderID;
     const orderStatus = req.body.orderStatus;
@@ -207,7 +226,22 @@ router.put('/changeStatus', function(req, res, next) {
         return;
     }
 
-    if(orderStatus === "NEW" || orderStatus === "READY" || orderStatus === "DELIVERED") {
+
+    if(orderStatus === "CLOSED") {
+        let response = await orders.findOne({
+            where: {
+                orderID: orderID
+            }
+        });
+
+        if(response.dataValues.isPaid.toString() === "false") {
+            res.status(200);
+            res.send(new ResponseType1(false, "Can not close not paid order ;("));
+            return;
+        }
+    }
+
+    if(orderStatus === "NEW" || orderStatus === "READY" || orderStatus === "DELIVERED" || orderStatus === "CLOSED") {
 
         const order = {
             orderStatus: orderStatus
@@ -232,6 +266,46 @@ router.put('/changeStatus', function(req, res, next) {
 
     } else {
         res.send(new ResponseType1(false, "The entered orderStatus is incorrect"));
+        return;
+    }
+
+});
+
+router.put('/isPaid', EmployeePermission_t3, function(req, res, next) {
+
+    const orderID = req.body.orderID;
+    const isPaid = req.body.isPaid;
+
+    if(!Number.isInteger(orderID)) {
+        res.send(new ResponseType1(false, "The entered orderID is incorrect"));
+        return;
+    }
+
+    if(isPaid == 1 || isPaid == 0) {
+
+        const order = {
+            isPaid: isPaid
+        };
+
+        orders.update(order, {
+                where: {
+                    orderID: orderID
+                }
+            }
+        ).then(
+            result => {
+                console.log(result);
+                res.send(new ResponseType1(true, "Order isPaid successfully changed"));
+            }
+        ).catch(
+            err => {
+                console.log(err);
+                res.send(new ResponseType1(false, "Something gone wrong ;("));
+            }
+        );
+
+    } else {
+        res.send(new ResponseType1(false, "The entered isPaid is incorrect"));
         return;
     }
 
