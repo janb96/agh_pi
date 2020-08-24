@@ -159,6 +159,39 @@ router.put('/useTable', function(req, res, next) {
 
 });
 
+router.put('/makeFree', EmployeePermission_t3, function(req, res, next) {
+
+    const tableID = req.body.tableID;
+    const tableStatus = "FREE";
+
+    if(!Number.isInteger(tableID)) {
+        res.send(new ResponseType1(false, "The entered tableID is incorrect"));
+        return;
+    }
+
+    const table = {
+        tableStatus: tableStatus
+    };
+
+    tables.update(table, {
+            where: {
+                tableID: tableID
+            }
+        }
+    ).then(
+        result => {
+            console.log(result);
+            res.send(new ResponseType1(true, "Record successfully changed"));
+        }
+    ).catch(
+        err => {
+            console.log(err);
+            res.send(new ResponseType1(false, "Something gone wrong ;("));
+        }
+    );
+
+});
+
 
 
 module.exports = router;

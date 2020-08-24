@@ -69,7 +69,19 @@ class Order extends Component {
                 this.setState({
                     status: response.data.status,
                     apiResponse: response.data.message
-                })
+                });
+
+                const tablePutData = {
+                    tableID: this.props.order.tableID
+                };
+
+                if(orderStatus === "CLOSED") {
+                    axios.put(config.apiUrl + "/tables/makeFree", tablePutData).then(
+                        response => {
+                            console.log(response);
+                        }
+                    );
+                }
             }
         );
     }

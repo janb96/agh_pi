@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {config} from "../../config";
+import exampleImg from '../../img/example1.jpg';
 
 class Product extends Component {
 
@@ -42,11 +43,14 @@ class Product extends Component {
             <div className="product">
                 <hr/>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-4">
                         <p>{this.props.product.productName}</p>
                         <p>Price: {this.props.product.productPrice} {config.currency}</p>
                     </div>
-                    <div className="col-6 text-center">
+                    <div className="col-4">
+                        <img src={exampleImg} alt={this.props.product.productName} className="img-fluid"/>
+                    </div>
+                    <div className="col-4 text-center">
                         <div className="row">
                             <div className="col-5">
                                 <button className="btn btn-danger" onClick={this.decrementQuantity} disabled={this.props.isOrdered}>
